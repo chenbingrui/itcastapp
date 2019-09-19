@@ -40,6 +40,7 @@ export default {
 <style lang="scss" scoped>
     .app-container {
         padding-top: 40px;
+		padding-bottom: 50px;
 		overflow-x: hidden;
 		
     }
@@ -50,7 +51,7 @@ export default {
 	}
 
 
-	
+
 	.v-leave-to {
 		opacity: 0;
 		transform: translateX(-100%);
