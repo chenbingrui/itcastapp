@@ -48,6 +48,9 @@ export default {
 		transform: translateX(100%);
 		
 	}
+
+
+	
 	.v-leave-to {
 		opacity: 0;
 		transform: translateX(-100%);
