@@ -2,8 +2,8 @@
     <div class="cmt-container">
         <h3>发表评论</h3>
         <hr>
-        <textarea placeholder="请输入评论的内容(可以吐槽120字)" maxlength="120"></textarea>
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <textarea placeholder="请输入评论的内容(可以吐槽120字)" maxlength="120" v-model="msg"></textarea>
+        <mt-button type="primary" size="large" @click="postComment">发表评论</mt-button>
         <div class="cmt-list">
             <div class="cmt-item" v-for="(item,i) in comments" :key="item.add_time">
                 <div class="cmt-title">
@@ -28,11 +28,14 @@
     </div>
 </template>
 <script>
+import {Toast} from 'mint-ui'
+
 export default {
     data(){
         return {
             pageIndex:1,  //默认展示第一个页面
-            comments:[]   //所有评论数组
+            comments:[],   //所有评论数组
+            msg:'',
         }
     },
     created(){
@@ -52,6 +55,26 @@ export default {
         getMore(){
             this.pageIndex++;
             this.getComments()
+        },
+        postComment(){  //发表评论
+
+            if(this.msg.trim().length===0){
+              return  Toast('输入的内容不能为空')
+            }
+
+            this.$http.psot('api/postcomment/'+this.$route.id,{content:this.msg.trim()}).then(function(){
+                if(result.body.status === 0 ){
+                    var cmt = {
+                        user_name: '匿名用户',
+                        add_time : Date.now(),
+                        content : this.msg.trim()
+                    };
+                    this.comments.unshift(cmt)
+                    this.msg= ''
+                }else{
+                    Toast('连接服务器失败')
+                }
+            })
         }
     },
     props:['id']
